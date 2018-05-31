@@ -1,0 +1,10 @@
+# binary files
+*.o
+client
+server
+
+# logs
+*.log
+
+# backup files
+Makefile~
