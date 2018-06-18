@@ -25,7 +25,7 @@ public:
   void process(std::ostream &output, std::string host, std::string command);
   
 private:
-  boost::asio::io_service *v_ioService;
+  boost::asio::io_service *v_ioService; // @JP@ hold as a reference
   boost::asio::ip::tcp::resolver v_resolver;
   
   boost::asio::ip::tcp::endpoint resolveHostname(std::string host);

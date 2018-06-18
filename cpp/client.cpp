@@ -27,6 +27,7 @@ using namespace std;
  */
 int main(int argc, char *argv[]) {
   
+  // @JP@ most of lines below can throw an exception, so the try-catch should cover entire main() function
   // process command line arguments
   Arguments args(argc, argv);
   if (!args.parse()) {
@@ -36,13 +37,15 @@ int main(int argc, char *argv[]) {
   
   // instantiate request processor
   io_service ioService;
+  // @JP@ you could also register a signal handler into ioService, in order to interrupt a client waiting for server response
+
   ClientRequestProcessor client(&ioService);
   
   // process the request
   try {
     client.process(cout, args.host(), args.command());
   } 
-  catch (std::exception &ex) {
+  catch (const std::exception &ex) {
     cerr << "Exception: " << ex.what() << endl;
     return ErrGeneral;
   }

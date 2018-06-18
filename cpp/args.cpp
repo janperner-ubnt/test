@@ -42,7 +42,9 @@ bool Arguments::parse()
   map<string, string> cmdMap;
   cmdMap.insert(make_pair("-c", CMD_CPU));
   cmdMap.insert(make_pair("-m", CMD_MEM));
-  
+  // @JP@ the following construction would consume less CPU cycles and reduce a need of copying:
+  //const auto cmdMap1 = map<string, string>{{"-c", CMD_CPU},{"-m", CMD_MEM}};
+
   // translate the command switch to command string
   map<string, string>::iterator it = cmdMap.find(v_argv[2]);
   if (it == cmdMap.end()) {

@@ -13,7 +13,11 @@
 #include "common.hpp"
 #include "crp.hpp"
 
-using namespace boost::asio;
+// @JP@ nitpick: I don't suggest to bring the librarian's namespaces to your namespace.
+// Just use the std namespace as it is: e.g. std::string and create an alias for long boost namespace:
+// e.g. namespace io = boost::asio; and then: io::socket.
+// Sooner or later, you'd stuck with your approach.
+using namespace boost::asio; 
 using namespace std;
 
 /**
@@ -32,6 +36,9 @@ ClientRequestProcessor::ClientRequestProcessor(io_service *ioService)
  * @param host Server hostname or address
  * @param command Command request
  */
+// @JP@ Hmm, hmm, passing strings by value can be appropriate for some specific cases,
+// when a move semantic is taking a place, but this is not that case. Here you're just wasting
+// resources, so the string should be passed by const reference.
 void ClientRequestProcessor::process(ostream &output, string host, string command)
 {
   // connect to the server
@@ -45,8 +52,10 @@ void ClientRequestProcessor::process(ostream &output, string host, string comman
 
   // read the response
   boost::asio::streambuf buf;
-  boost::system::error_code error;
+  boost::system::error_code error;   
   size_t len;
+  // @JP@ nitpick: maybe the similar overload, throwing an exception, in case of error, can be used here,
+  // rather than passing the error structure
   while (len = read(socket, buf, transfer_all(), error) > 0) {
     output << boost::asio::buffer_cast<const char*>(buf.data());
   }

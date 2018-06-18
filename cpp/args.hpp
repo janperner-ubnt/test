@@ -13,15 +13,17 @@
 /**
  * @brief Holds the command line arguments and their processed content.
  */
-class Arguments
+class Arguments // @JP@ should be decorated by final; the virtual dtor definition shall be defined otherwise
 {
 public:
+  // @JP@ I'd prefer parsing done in ctor, rather than storing ptr to argument array,
+  // there is not clear ownership, when the object is being copied
   Arguments(int argc, char *argv[]);
 
   bool parse();
   
-  std::string host();
-  std::string command();
+  std::string host() const;
+  std::string command() const;
   
 private:
   /// Source data
